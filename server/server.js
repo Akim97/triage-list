@@ -1,11 +1,13 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors')
 
 const app = express();
 
 const PORT = 3000;
 
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -15,9 +17,9 @@ const apiRouter = require('./routers/api');
 app.use(express.static(path.join(__dirname, '../build')));
 
 
-app.get('/api/',(req, res) => {
+app.get('/',(req, res) => {
     console.log(' Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET requestSuccessfuly got a GET request');
-    res.status(200).json('hi');
+    res.status(200).json(res.locals.newPatient); 
 })
 
 app.post('/api/', patientcontroller.createUser, (req, res) => {
