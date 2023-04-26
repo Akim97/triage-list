@@ -2,20 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('patient', {
+    await queryInterface.createTable('Patients', {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        autoIncrement: true, 
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Last_Name: {
+      firstName: {
         type: Sequelize.STRING
       },
-      First_Name: {
+      lastName: {
         type: Sequelize.STRING
       },
-      Chief_Complaint: {
+      chiefComplaint: {
         type: Sequelize.STRING
       },
       Address: {
@@ -24,37 +24,22 @@ module.exports = {
       DOB: {
         type: Sequelize.STRING
       },
-      Time_Arrived: {
+      TimeArrived: {
         type: Sequelize.STRING
       },
-      Created_At: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      Updated_At: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
-
-
-
-    await queryInterface.createTable('doctor', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      Last_Name: {
-        type: Sequelize.STRING
-      },
-      First_Name: {
-        type: Sequelize.STRING
-      },
-    });
+    },
+    
+    );
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTableAll();
+    await queryInterface.dropTable('Patients');
   }
 };
