@@ -1,22 +1,47 @@
 
 const db = require('../model/patientmodel');
-const pg = require('pg')
+const pg = require('pg');
+const { enable } = require('../server');
 const PG_URI = 'postgres://gcavarzr:TVYfCFKtduMoMfGZuzzx4RZ_SaxbFtlR@raja.db.elephantsql.com/gcavarzr';
 
 
 patientcontroller = {};
 
-patientcontroller.createUser = (req, res, next) => {
-  // console.log('entering createUser');
-  const { lastName, firstName, chiefComplaint, Address, DOB, timeArrived } = req.body;
+patientcontroller.findUser = (req, res, next) => {
+  console.log('ENTERING FIND USER');
+  const text = 'SELECT * FROM patients'
 
-  const text = 'INSERT INTO patients (lastName, firstName, chiefComplaint, Address) VALUES ($1, $2, $3, $4)'
-  const value = [firstName, lastName, chiefComplaint, Address]
-  // const query = {
-  //   values: [firstName, lastName, chiefComplaint, Address, DOB, timeArrived],
-  // };
+  db.query(text,(err, result) => {
+    // console.log('ENTERING DB QUERY FIND USER');
+    if(err) {
+      // console.log('CATCHING FINDING USER ERROR');
+      return next({
+        log: 'Error finding user',
+        status: 400,
+        message: { err: "Unable to find user" },
+      });
+    } else {
+        // console.log('ENTERING FINDING USER');
+        res.locals.newPatient = [];
+
+        for (let i = 0; i < result.rows.length; i++) {
+          res.locals.newPatient.push(Object.assign({}, result.rows[i]));
+        }
+        // console.log(res.locals.newPatient)
+        return next()
+    }
+  })
+};
+
+patientcontroller.createUser = (req, res, next) => {
+  console.log('entering createUser');
+  const { Last_Name, First_Name, Chief_Complaint, Address, Time_Arrived } = req.body;
+
+  const text = 'INSERT INTO patients (Last_Name, First_Name, Chief_Complaint, Address, Time_Arrived) VALUES ($1, $2, $3, $4, NOW())'
+  const value = [Last_Name, First_Name, Chief_Complaint, Address, Time_Arrived]
 
   db.query(text, value, (err, result) => {
+    console.log("enterting enable.create")
     if(err) {
       console.log('CATCHING ERROR HERE')
       return next({
@@ -35,10 +60,10 @@ patientcontroller.createUser = (req, res, next) => {
 
 
 patientcontroller.deleteUser = (req, res, next) => {
-  const { lastName, firstName, chiefComplaint, Address, DOB, timeArrived } = req.body;
+  const { Last_name, first_name, chief_complaint, Address, DOB, time_arrived } = req.body;
 
-  const text = 'INSERT INTO patients (lastName, firstName, chiefComplaint, Address) VALUES ($1, $2, $3, $4)'
-  const value = [firstName, lastName, chiefComplaint, Address]
+  const text = 'INSERT INTO patients (lastName, firstName, chief_complaint, Address, time_arrived) VALUES ($1, $2, $3, $4, NOW())'
+  const value = [last_name, first_name, chief_complaint, Address, time_arrived]
 
   db.query(text, value, (err, result) => {
     if(err) {
@@ -72,8 +97,9 @@ client.connect((err) => {
 
 // CREATE TABLE patients (
 //   id SERIAL PRIMARY KEY,
-//   firstName VARCHAR(255) NOT NULL,
-//   lastName VARCHAR(255) NOT NULL,
-//   chiefComplaint VARCHAR(255) NOT NULL,
-//   address VARCHAR(255) NOT NULL
+//   Last_name VARCHAR(255) NOT NULL,
+//   First_name VARCHAR(255) NOT NULL,
+//   Chief_complaint VARCHAR(255) NOT NULL,
+//   Address VARCHAR(255) NOT NULL
+//   time_arrived TIMESTAMP NOT NULL
 // );

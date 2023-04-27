@@ -37,8 +37,8 @@ module.exports = {
             publicPath: '/build/bundle.js',
         },
         proxy: {
-            '/': {
-                target: 'http://localhost:3000/',
+            '/**': {
+                target: 'http://localhost:3000',
             }
         }
     },

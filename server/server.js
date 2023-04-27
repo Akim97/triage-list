@@ -10,21 +10,15 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/', express.static(path.join(__dirname, '../build')));
 
 const apiRouter = require('./routers/api');
 
-
-app.use(express.static(path.join(__dirname, '../build')));
-
-
-app.get('/',(req, res) => {
-    console.log(' Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET request Successfuly got a GET requestSuccessfuly got a GET request');
-    res.status(200).json(res.locals.newPatient); 
+app.get('/', (req, res, next) => {
+    res.sendFile(path.join(__dirname, '../index.html'))
 })
 
-app.post('/api/', patientcontroller.createUser, (req, res) => {
-    res.status(200)
-})
+app.use('/api', apiRouter);
 
 // unknown path error handler
 app.use((req, res) => res.status(404).send('This is not the page you\'re looking for...'));
