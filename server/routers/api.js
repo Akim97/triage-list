@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/', patientcontroller.findUser, (req, res) => {
     console.log(' Successfuly got a GET request');
-    res.status(200).json(res.locals.newPatient)
+    res.status(200).json(res.locals.newPatient);
 })
 
 router.post('/', patientcontroller.createUser, (req, res) => {
