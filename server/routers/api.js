@@ -11,7 +11,6 @@ router.get('/', patientcontroller.findUser, (req, res) => {
 
 router.post('/', patientcontroller.createUser, (req, res) => {
     console.log(' Successfuly got a POST request');
-
     res.status(200)
 })
 

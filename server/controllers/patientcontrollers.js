@@ -8,7 +8,7 @@ const PG_URI = 'postgres://gcavarzr:TVYfCFKtduMoMfGZuzzx4RZ_SaxbFtlR@raja.db.ele
 patientcontroller = {};
 
 patientcontroller.findUser = (req, res, next) => {
-  console.log('ENTERING FIND USER');
+  // console.log('ENTERING FIND USER');
   const text = 'SELECT * FROM patients'
 
   db.query(text,(err, result) => {
@@ -35,10 +35,13 @@ patientcontroller.findUser = (req, res, next) => {
 
 patientcontroller.createUser = (req, res, next) => {
   console.log('entering createUser');
-  const { Last_Name, First_Name, Chief_Complaint, Address, Time_Arrived } = req.body;
+  const { last_name, first_name, chief_complaint, address} = req.body;
+  console.log(last_name, first_name, chief_complaint, address)
+  
+  // console.log(req.body)
 
   const text = 'INSERT INTO patients (Last_Name, First_Name, Chief_Complaint, Address, Time_Arrived) VALUES ($1, $2, $3, $4, NOW())'
-  const value = [Last_Name, First_Name, Chief_Complaint, Address, Time_Arrived]
+  const value = [last_name, first_name, chief_complaint, address]
 
   db.query(text, value, (err, result) => {
     console.log("enterting enable.create")
@@ -60,10 +63,10 @@ patientcontroller.createUser = (req, res, next) => {
 
 
 patientcontroller.deleteUser = (req, res, next) => {
-  const { Last_name, first_name, chief_complaint, Address, DOB, time_arrived } = req.body;
+  const { Last_name, first_name, chief_complaint, Address } = req.body;
 
   const text = 'INSERT INTO patients (lastName, firstName, chief_complaint, Address, time_arrived) VALUES ($1, $2, $3, $4, NOW())'
-  const value = [last_name, first_name, chief_complaint, Address, time_arrived]
+  const value = [last_name, first_name, chief_complaint, Address]
 
   db.query(text, value, (err, result) => {
     if(err) {
